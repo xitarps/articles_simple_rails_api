@@ -63,31 +63,18 @@ RSpec.describe Article, type: :model do
       body = Article.serialize_to_api.deep_symbolize_keys
 
       expect(body[:data].class).to eq Array
+      expect(body[:data].first[:id]).to eq '2'
+      expect(body[:data].last[:id]).to eq '1'
+      expect(body[:data].first[:type]).to eq 'article'
+      expect(body[:data].last[:type]).to eq 'article'
 
-      expect(body[:data]).to eq(
-        [
-            {
-              id: second_article.id.to_s,
-              type: 'article',
-              attributes:
-              {
-                title: second_article.title,
-                content: second_article.content,
-                slug: second_article.slug
-              }
-            },
-            {
-              id: first_article.id.to_s,
-              type: 'article',
-              attributes:
-              {
-                title: first_article.title,
-                content: first_article.content,
-                slug: first_article.slug
-              }
-            }
-          ]
-        )
+      expect(body[:data].first[:attributes]).to eq(
+        {title: second_article.title, content: second_article.content,
+         slug: second_article.slug})
+
+      expect(body[:data].last[:attributes]).to eq(
+        { title: first_article.title, content: first_article.content,
+          slug: first_article.slug})
     end
     it 'returns arary json order ascendant' do
       first_article = create(:article)
@@ -95,31 +82,19 @@ RSpec.describe Article, type: :model do
 
       body = Article.serialize_to_api(order: :asc).deep_symbolize_keys
 
-      expect(body).to eq(
-        {
-          data: [
-            {
-              id: first_article.id.to_s,
-              type: 'article',
-              attributes:
-              {
-                title: first_article.title,
-                content: first_article.content,
-                slug: first_article.slug
-              }
-            },
-            {
-              id: second_article.id.to_s,
-              type: 'article',
-              attributes:
-              {
-                title: second_article.title,
-                content: second_article.content,
-                slug: second_article.slug
-              }
-            }
-          ]
-        })
+      expect(body[:data].class).to eq Array
+      expect(body[:data].first[:id]).to eq '1'
+      expect(body[:data].last[:id]).to eq '2'
+      expect(body[:data].first[:type]).to eq 'article'
+      expect(body[:data].last[:type]).to eq 'article'
+
+      expect(body[:data].first[:attributes]).to eq(
+        {title: first_article.title, content: first_article.content,
+         slug: first_article.slug})
+
+      expect(body[:data].last[:attributes]).to eq(
+        { title: second_article.title, content: second_article.content,
+          slug: second_article.slug})
     end
   end
 end
