@@ -1,12 +1,6 @@
 class Api::V1::ArticlesController < Api::V1::CustomApiController
   def index
-    articles = Article.all.map { |article| { type: 'articles',
-                                             id: article.id,
-                                             attributes: {
-                                               title: article.title,
-                                               content: article.content,
-                                               slug: article.slug
-                                             }}}
+    articles = Article.all.map { |article| article.serialize_to_api }
     data = { data: articles }
     render json: data
   end
@@ -15,14 +9,7 @@ class Api::V1::ArticlesController < Api::V1::CustomApiController
 
     article = Article.find(params[:id]) 
 
-    data = { data: 
-              { type: 'articles',
-                id: article.id,
-                attributes: {
-                title: article.title,
-                content: article.content,
-                slug: article.slug
-                }}}
+    data = { data: article.serialize_to_api }
 
     render json: data
   end
