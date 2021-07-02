@@ -1,16 +1,13 @@
 class Api::V1::ArticlesController < Api::V1::CustomApiController
   def index
-    articles = Article.all.map { |article| article.serialize_to_api }
-    data = { data: articles }
-    render json: data
+    articles = Article.serialize_to_api
+    render json: articles
   end
 
   def show
 
-    article = Article.find(params[:id]) 
+    article = Article.find(params[:id]).serialize_to_api
 
-    data = { data: article.serialize_to_api }
-
-    render json: data
+    render json: article
   end
 end
