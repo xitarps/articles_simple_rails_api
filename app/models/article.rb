@@ -4,27 +4,25 @@ class Article < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   def self.serialize_to_api(order: :desc)
-    { data: Article.order(id: order).map { |article| { type: 'articles',
-                                          id: article.id,
-                                          attributes: {
-                                            title: article.title,
-                                            content: article.content,
-                                            slug: article.slug
-                                          }
-                                        }
-                            }
+    { data: Article.order(id: order)
+                   .map { |article| article.serialize_attributes}
     }
   end
 
   def serialize_to_api
     { data:
-      { type: 'articles',
-        id: id,
-        attributes: {
-          title: title,
-          content: content,
-          slug: slug
-        }
+      self.serialize_attributes
+    }
+  end
+
+  def serialize_attributes
+    {
+      type: 'articles',
+      id: id,
+      attributes: {
+        title: title,
+        content: content,
+        slug: slug
       }
     }
   end
