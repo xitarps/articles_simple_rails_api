@@ -36,4 +36,88 @@ RSpec.describe Article, type: :model do
       expect(repeated_article.errors[:slug]).to include 'has already been taken'
     end
   end
+
+  describe "#serialize_to_api" do
+    it 'returns a valid single json' do
+      first_article = create(:article)
+      second_article = create(:article)
+
+      expect(second_article.serialize_to_api).to eq(
+        {
+          data:{
+            id: second_article.id,
+            type: 'articles',
+            attributes:
+            {
+              title: second_article.title,
+              content: second_article.content,
+              slug: second_article.slug
+            }
+          }
+        })
+    end
+  end
+
+  describe ".serialize_to_api" do
+    it 'returns a valid arary json' do
+      first_article = create(:article)
+      second_article = create(:article)
+
+      expect(Article.serialize_to_api).to eq(
+        {
+          data: [
+            {
+              id: second_article.id,
+              type: 'articles',
+              attributes:
+              {
+                title: second_article.title,
+                content: second_article.content,
+                slug: second_article.slug
+              }
+            },
+            {
+              id: first_article.id,
+              type: 'articles',
+              attributes:
+              {
+                title: first_article.title,
+                content: first_article.content,
+                slug: first_article.slug
+              }
+            }
+          ]
+        })
+    end
+    it 'returns arary json order ascendant' do
+      first_article = create(:article)
+      second_article = create(:article)
+
+      expect(Article.serialize_to_api(order: :asc)).to eq(
+        {
+          data: [
+            {
+              id: first_article.id,
+              type: 'articles',
+              attributes:
+              {
+                title: first_article.title,
+                content: first_article.content,
+                slug: first_article.slug
+              }
+            },
+            {
+              id: second_article.id,
+              type: 'articles',
+              attributes:
+              {
+                title: second_article.title,
+                content: second_article.content,
+                slug: second_article.slug
+              }
+            }
+          ]
+        })
+    end
+  end
 end
