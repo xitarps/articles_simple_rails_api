@@ -16,7 +16,7 @@ RSpec.describe Api::V1::ArticlesController do
 
       expect(json_data.length).to eq 1
       expect(expected[:id]).to eq article.id
-      expect(expected[:type]).to eq 'articles'
+      expect(expected[:type]).to eq 'article'
       expect(expected[:attributes]).to eq( { title: article.title,
                                              content: article.content,
                                              slug: article.slug })

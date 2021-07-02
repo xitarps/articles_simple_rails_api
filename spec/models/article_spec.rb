@@ -48,7 +48,7 @@ RSpec.describe Article, type: :model do
         {
           data:{
             id: second_article.id,
-            type: 'articles',
+            type: 'article',
             attributes:
             {
               title: second_article.title,
@@ -70,7 +70,7 @@ RSpec.describe Article, type: :model do
           data: [
             {
               id: second_article.id,
-              type: 'articles',
+              type: 'article',
               attributes:
               {
                 title: second_article.title,
@@ -80,7 +80,7 @@ RSpec.describe Article, type: :model do
             },
             {
               id: first_article.id,
-              type: 'articles',
+              type: 'article',
               attributes:
               {
                 title: first_article.title,
@@ -100,7 +100,7 @@ RSpec.describe Article, type: :model do
           data: [
             {
               id: first_article.id,
-              type: 'articles',
+              type: 'article',
               attributes:
               {
                 title: first_article.title,
@@ -110,7 +110,7 @@ RSpec.describe Article, type: :model do
             },
             {
               id: second_article.id,
-              type: 'articles',
+              type: 'article',
               attributes:
               {
                 title: second_article.title,

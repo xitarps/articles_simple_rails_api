@@ -17,7 +17,7 @@ class Article < ApplicationRecord
 
   def serialize_attributes
     {
-      type: 'articles',
+      type: 'article',
       id: id,
       attributes: {
         title: title,
