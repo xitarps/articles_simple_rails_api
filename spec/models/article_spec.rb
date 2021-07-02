@@ -40,23 +40,18 @@ RSpec.describe Article, type: :model do
   describe "#serialize_to_api" do
     it 'returns a valid single json' do
       first_article = create(:article)
-      second_article = create(:article)
+      test_article = create(:article)
 
-      body = second_article.serialize_to_api.as_json
-      
-      expect(body).to eq(
-        {
-          data:{
-            id: second_article.id,
-            type: 'article',
-            attributes:
-            {
-              title: second_article.title,
-              content: second_article.content,
-              slug: second_article.slug
-            }
-          }
-        }.as_json)
+      body = test_article.serialize_to_api
+
+      # body = JSON.parse(body).deep_symbolize_keys
+
+      expect(body[:data].class).to eq Hash
+      expect(body[:data][:id]).to eq test_article.id.to_s
+      expect(body[:data][:type]).to eq 'article'
+      expect(body[:data][:attributes]).to eq({ title: test_article.title,
+                                                 content: test_article.content,
+                                                 slug: test_article.slug })
     end
   end
 
@@ -65,11 +60,14 @@ RSpec.describe Article, type: :model do
       first_article = create(:article)
       second_article = create(:article)
 
-      expect(Article.serialize_to_api).to eq(
-        {
-          data: [
+      body = Article.serialize_to_api.deep_symbolize_keys
+
+      expect(body[:data].class).to eq Array
+
+      expect(body[:data]).to eq(
+        [
             {
-              id: second_article.id,
+              id: second_article.id.to_s,
               type: 'article',
               attributes:
               {
@@ -79,7 +77,7 @@ RSpec.describe Article, type: :model do
               }
             },
             {
-              id: first_article.id,
+              id: first_article.id.to_s,
               type: 'article',
               attributes:
               {
@@ -89,17 +87,19 @@ RSpec.describe Article, type: :model do
               }
             }
           ]
-        })
+        )
     end
     it 'returns arary json order ascendant' do
       first_article = create(:article)
       second_article = create(:article)
 
-      expect(Article.serialize_to_api(order: :asc)).to eq(
+      body = Article.serialize_to_api(order: :asc).deep_symbolize_keys
+
+      expect(body).to eq(
         {
           data: [
             {
-              id: first_article.id,
+              id: first_article.id.to_s,
               type: 'article',
               attributes:
               {
@@ -109,7 +109,7 @@ RSpec.describe Article, type: :model do
               }
             },
             {
-              id: second_article.id,
+              id: second_article.id.to_s,
               type: 'article',
               attributes:
               {
