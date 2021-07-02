@@ -12,22 +12,14 @@ RSpec.describe Api::V1::ArticlesController do
       article = create(:article)
       get '/api/v1/articles'
 
-      body = JSON.parse(response.body, symbolyze_keys: true)
+      expected = json_data.first
 
-      expect(body).to eq ({
-        data: [
-          {
-            id: article.id,
-            type: 'articles',
-            attributes:
-            {
-              title: article.title,
-              content: article.content,
-              slug: article.slug
-            }
-          }
-        ]
-      }.as_json)
+      expect(json_data.length).to eq 1
+      expect(expected[:id]).to eq article.id
+      expect(expected[:type]).to eq 'articles'
+      expect(expected[:attributes]).to eq( { title: article.title,
+                                             content: article.content,
+                                             slug: article.slug })
     end
   end
 end

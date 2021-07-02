@@ -42,7 +42,9 @@ RSpec.describe Article, type: :model do
       first_article = create(:article)
       second_article = create(:article)
 
-      expect(second_article.serialize_to_api).to eq(
+      body = second_article.serialize_to_api.as_json
+      
+      expect(body).to eq(
         {
           data:{
             id: second_article.id,
@@ -54,7 +56,7 @@ RSpec.describe Article, type: :model do
               slug: second_article.slug
             }
           }
-        })
+        }.as_json)
     end
   end
 
